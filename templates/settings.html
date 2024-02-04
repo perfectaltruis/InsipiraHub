@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Settings</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(30, 30, 30);
+            font-size: 1.3em;
+            color: white;
+            text-align: center
+        }
+
+        .header {
+            background-color: #333;
+            color: rgb(255, 255, 255);
+            padding: 10px;
+            text-align: center;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px dotted rgb(17, 234, 17);
+            border-radius: 5px;
+            margin-top: 50px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid teal;
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 70px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        a {
+        color: #fff;
+        margin: 60px;
+        }
+        a:hover {
+        color: teal;
+        text-decoration: underline;
+        }
+     .profile-image {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin-right: 10px;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Personal Manager</h1>
+        <p>Welcome to your personal manager <a href="/dashboard">Dashboard</a> | <a href="/profile">back</a></p>
+    </div>
+    <div class="post">
+        <h1>User Settings</h1>
+            <ul style="list-style-type: none">
+                <li><a href="/account">account</a></li>
+                <li><a href="/privacy">privacy</a></li>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+            </ul>
+    </div>
+</body>
+</html>

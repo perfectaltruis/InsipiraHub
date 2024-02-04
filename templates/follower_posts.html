@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Follower's Posts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: white;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-picture {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%; /* Set border-radius to 50% for circular shape */
+            margin-right: 15px;
+        }
+
+        li strong {
+            color: #4CAF50;
+        }
+
+        .no-posts {
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Follower's Posts</h1>
+    </header>
+    <div class="container">
+                <a href="{{ url_for('public_profile', user_id=user_id) }}">Back to Public Profile</a>
+        {% if posts %}
+            <ul>
+                {% for post in posts %}
+                    <li>
+                        <img class="profile-picture" src="{{ url_for('uploaded_file', filename=post.profile_picture) }}" alt="Profile Picture">
+                        <strong>Title:</strong> {{ post.title }},
+                        <strong>Content:</strong> {{ post.content }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="no-posts">
+                <p>No posts available.</p>
+            </div>
+        {% endif %}
+    </div>
+
+<!-- Pagination -->
+<div class="pagination">
+    {% if page > 1 %}
+        <a href="{{ url_for('follower_posts', user_id=user_id, page=page-1) }}">Previous</a>
+    {% endif %}
+
+{% if posts|length >= per_page %}
+        <a href="{{ url_for('follower_posts', user_id=user_id, page=page+1) }}">Next</a>
+    {% endif %}
+</div>
+
+</body>
+</html>

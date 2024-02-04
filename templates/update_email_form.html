@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Email Form</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+            <link rel="stylesheet" href="{{ url_for('static', filename='static/CSS/flash-styles.css') }}">
+
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #9a9797;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: rgba(138, 138, 138, 0.8);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .container h1 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: calc(100% - 20px);
+            background-color: #908981;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            border-bottom: 2px solid teal;
+            border-radius: 5px;
+            padding: 8px;
+            outline: none;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+
+        .form-group button {
+            background-color: #4caf50;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+        .eye-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+
+        .login-form button {
+            background-color: #4caf50;
+            color: white;
+            width: calc(100% - 20px);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-form button:hover {
+            background-color: #45a249;
+        }
+
+        .links {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .links a {
+            margin: 0 3px;
+            text-decoration: none;
+            color: #1900ff;
+        }
+
+        .links a:hover {
+            
+            text-decoration: underline solid rgb(149, 17, 2) 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+        {% endwith %}
+        <h1>Update Email Address</h1>
+        <!-- Add this hidden div for the popup message
+<div id="emailExistsPopup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <p>The new email address is already in use. Please choose a different email address.</p>
+    </div>
+</div>
+ -->
+<form method="POST" action="/update_email" onsubmit="return checkEmailAvailability()">
+            <div class="form-group">
+
+    <!-- New field for the current email -->
+    <label for="old_email">Current Email:</label>
+    <input type="email" id="old_email" name="old_email" required>
+
+            </div>
+            <div class="form-group">
+                <label for="new_email">New Email Address:</label>
+                <input type="email" id="new_email" name="new_email" required>
+            </div>
+            <div class="form-group">
+                <label for="security_pin">Security PIN:</label>
+                <input type="password" id="security_pin" name="security_pin" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Update Email</button>
+            </div>
+        </form>
+    </div>
+<script>
+    function isValidEmail(email) {
+    // Basic email format validation
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function checkEmailAvailability() {
+    var newEmail = document.getElementById('new_email').value;
+    var securityPin = document.getElementById('security_pin').value;
+
+    // Perform email format validation
+    if (!isValidEmail(newEmail)) {
+        alert('Invalid email address format.');
+        return false;
+    }
+
+    // Perform an asynchronous check (you may use AJAX) if the email exists in the database
+    // For demonstration purposes, let's assume the result is stored in a variable called emailExists
+    var emailExists = false; // Set to true if email exists in the database, false otherwise
+
+    if (emailExists) {
+        // Email exists, display the popup
+        document.getElementById('emailExistsPopup').style.display = 'block';
+        return false; // Prevent form submission
+    }
+
+    // Additional validation for security PIN (you can customize this based on your requirements)
+    if (securityPin.length < 4) {
+        alert('Security PIN must be at least 4 characters long.');
+        return false;
+    }
+
+    // Email is valid, allow form submission
+    return true;
+}
+
+function closePopup() {
+    // Close the popup
+    document.getElementById('emailExistsPopup').style.display = 'none';
+}
+
+</script>
+<script src="{{ url_for('static', filename='static/JS/flash-disappear.js') }}"></script>
+</body>
+</html>

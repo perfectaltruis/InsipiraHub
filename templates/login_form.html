@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .flash-message-box {
+            margin-bottom: 15px;
+        }
+
+        .flash-message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .flash-error {
+            background-color: #ffdddd;
+            color: #ff0000;
+        }
+
+        .flash-success {
+            background-color: #ddffdd;
+            color: #00aa00;
+        }
+
+        .flash-info {
+            background-color: #e6f7ff;
+            color: #007bff;
+        }
+
+        .lable-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .remember-me {
+            margin-left: 5px;
+        }
+
+        .links {
+            margin-top: 20px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h1>Welcome back</h1>
+
+        <div class="flash-message-box">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if 'Error' in message %}
+                            <div class="flash-message flash-error">{{ message }}</div>
+                        {% elif 'success' in message %}
+                            <div class="flash-message flash-success">{{ message }}</div>
+                        {% elif 'Info' in message %}
+                            <div class="flash-message flash-info">{{ message }}</div>
+                        {% else %}
+                            <div class="flash-message">{{ message }}</div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <form class="lable-form" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <!-- Add reCAPTCHA field -->
+            <div class="form-group">
+                <div class="g-recaptcha" data-sitekey="6Ld6zBQpAAAAAMgNi9K1FcZ1P5p9vpFKHhHFP5Tu"></div>
+            </div>
+
+            <p style="display: inline;">Keep me logged in<input class="remember_me" type="checkbox" id="remember_me" name="remember_me"></p>
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="links">
+            <p>Don't have an account? <a href="/">Home</a> | <a href="/register">Register</a></p>
+            <p>Forgot your password? <a href="/reset_password">Reset Password</a></p>
+        </div>
+    </div>
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</body>
+</html>

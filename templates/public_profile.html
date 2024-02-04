@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Profile</title>
+    <style>
+        .profile-section img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Add your additional CSS styles here */
+    </style>
+</head>
+
+<body>
+    <section class="profile-section">
+        <img src="{{ profile_picture }}" alt="Profile Picture">
+        <h2>{{ username }}</h2>
+
+        {% if is_following and is_followed %}
+            <p>{{ username }} is following you.</p> <p>and </p>
+        <p>You are following {{ username }} <a href="{{ url_for('follower_posts', user_id=user_id) }}">View follower's posts</a></p>
+        {% elif is_following %}
+            <p>You are following {{ username }}.
+        <a href="{{ url_for('following_posts', user_id=user_id) }}">View following posts</a></p>
+        {% elif is_followed %}
+            <p>{{ username }} follows you.</p>
+
+                <p>But You are not following: {{username}}</p>
+        {% else %}
+            <p>{{ username }} follows you.</p>
+        {% endif %}
+
+        <p>Followers: {{ followers_count }}</p>
+        <p>Following: {{ following_count }}</p>
+
+
+        <p><strong>Joined: </strong> {{ registration_date }}</p>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/CSS/flash-styles.css') }}">
+</head>
+
+<body>
+<h1>
+    FOLLOWERS PROFILE
+</h1>
+    <section class="profile-section">
+        <h2>{{ username }}</h2>
+
+        <h3>Followers:</h3>
+            {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+        {% endwith %}
+        <ul>
+            {% for follower in follower_usernames %}
+            <li><a href="{{ url_for('public_profile', user_id=follower.id) }}">{{ follower.username }}</a></li>
+            {% endfor %}
+        </ul>
+    </section>
+</body>
+    <script src="{{ url_for('static', filename='static/JS/flash-disappear.js') }}"></script>
+</html>

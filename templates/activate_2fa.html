@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2FA Activation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/CSS/flash-styles.css') }}">
+</head>
+<body>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+        {% endwith %}
+    <h1>Two-Factor Authentication (2FA) Activation</h1>
+   <form method="POST" action="/activate_2fa">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br>
+    <p>Please enter "activate" to activate Two-Factor Authentication (2FA) or "deactivate" to deactivate:</p>
+    <input type="text" name="user_input" required>
+    <button type="submit">Submit</button>
+</form>
+    <script src="{{ url_for('static', filename='static/JS/flash-disappear.js') }}"></script>
+</body>
+</html>

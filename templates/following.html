@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Following Users</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/CSS/flash-styles.css') }}">
+
+</head>
+
+<body>
+    <h1>Users You Are Following</h1>
+    <ul>
+    {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <li class="flash-message">{{ message }}</li>
+                    {% endfor %}
+                {% endif %}
+        {% endwith %}
+    </ul>
+    <ul>
+        {% for user in following_users %}
+            <li>
+                <a href="{{ url_for('public_profile', user_id=user.id) }}">{{ user.username }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+    <script src="{{ url_for('static', filename='static/JS/flash-disappear.js') }}"></script>
+
+</html>

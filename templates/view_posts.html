@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Posts</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/CSS/posts-media-queries.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/CSS/user-posts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/CSS/post-styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/CSS/flash-styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/CSS/post-results.css') }}">
+
+    <style>
+
+        .form{
+            margin: 2px 20px 20px;
+            display: inline;
+        }
+        .search-category{
+            width: 100px;
+            border-radius: 50px;
+        }
+        .search-input{
+            border: 1px solid white;
+            border-radius: 50px;
+            padding-left: 25px;
+        }
+        .search{
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+         <div class="header">
+                <h1>Posts</h1>
+                <p class="form"><a href="/dashboard">Dashboard</a><a href="/profile">profile</a>
+                    <a class="create-post option" href="{{ url_for('create_post') }}">Create New Post</a> </p>
+                    <form class="form" id="search-form" action="/view_posts" method="GET">
+                            <input  class ="search-input" type="text" id="search-input" name="q" placeholder="Search...">
+                            <select class="search-category" id="search-category" name="category">
+                                <option value="all">All</option>
+                                <option value="title">Title</option>
+                                <option value="content">Content</option>
+                                <option value="author">Author</option>
+                            </select>
+                            <button type="submit" class="search">Search</button>
+                    </form>
+
+
+                <!--Flash Message to show post creation success-->
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="flash-message">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <!--Flash Message to show results of the search -->
+                {% if total_posts is defined %}
+                    {% if total_posts > 0 %}
+                    <p class="search-result-message result-found">Your search has resulted in {{ total_posts }} result(s).</p>
+                    {% else %}
+                    <p class="search-result-message no-result-found">No results found.</p>
+                    {% endif %}
+                    {% else %}
+                    <p class="search-result-message no-result-found">No result found</p>
+                {% endif %}
+           </div>
+        <div class="container">
+        {% for post in posts %}
+            <div class="post">
+                    <div class="posts">
+                    <img src="{{ url_for('uploaded_file', filename=post.profile_picture) }}" class="profile-image" alt="Profile Image">
+                    <h2><a href="{{ url_for('view_user_posts', user_id=post.user_id) }}">{{ post.title }}</a></h2>
+                    <!-- Modify the post content to show a shortened version -->
+                    <p>{{ post.content[:100] }}{% if post.content|length > 100 %}...{% endif %}</p>
+                    <small>
+                        {% if post.is_edited %}
+                            edited by {{ post.username }} on {{ post.edited_at.strftime('%Y-%m-%d %H:%M:%S %A') }}<br>
+                            Posted on {{ post.created_at.strftime('%Y-%m-%d %H:%M:%S %A') }}
+                        {% else %}
+                            Posted by {{ post.username }} on {{ post.created_at.strftime('%Y-%m-%d %H:%M:%S %A') }}
+                        {% endif %}
+                    </small>
+                    <!-- "Read More" link to view the full post in a new page -->
+                    <a class="read-more" href="{{ url_for('full_post', post_id=post.id) }}">Read More</a>
+
+                    <button class="delete-btn" onclick="deletePost({{ post.id }})">Delete</button>
+                    <button class="edit-btn" onclick="window.location.href='/edit_post/{{ post.id }}'">Edit</button>
+                    <button onclick="likePost({{ post.id }})">Like</button>
+                    <span id="like-count-{{ post.id }}">{{ post.num_likes }}</span> Likes
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+<!-- Pagination controls -->
+<div class="pagination">
+    {% for page_number in pagination_range %}
+        {% if page_number == current_page %}
+            <span>{{ page_number }}</span>
+        {% else %}
+            <a href="/view_posts?page={{ page_number }}">{{ page_number }}</a>
+        {% endif %}
+    {% endfor %}
+</div>
+</div>
+    <script src="{{ url_for('static', filename='static/JS/like-posts.js') }}"></script>
+   <script src="{{ url_for('static', filename='static/JS/flash-disappear.js') }}"></script>
+   <script src="{{ url_for('static', filename='static/JS/post-results-disappear.js') }}"></script>
+   <script src="{{ url_for('static', filename='static/JS/search-functionality.js') }}"></script>
+   <script src="{{ url_for('static', filename='static/JS/delete-posts.js') }}"></script>
+
+</body>
+</html>

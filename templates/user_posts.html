@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/CSS/user-posts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/CSS/posts-media-queries.css') }}">
+</head>
+<body>
+    <div class="header">
+        <h1>Posts and the poster.</h1>
+        <p>
+            Already have an account?
+            <a href="/dashboard">Dashboard</a>
+            <a href="/profile">profile</a>
+            <a class="create-post option" href="{{ url_for('create_post') }}">Create New Post</a>
+            <a href="{{ url_for('view_posts') }}">All posts</a>
+        </p>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <div class="container">
+        <div class="posts">
+            <!-- In your user_posts.html template -->
+        {% for post in posts %}
+            <div class="post">
+                <div class="image">
+                    <img style="display: inline;" src="{{ url_for('uploaded_file', filename=post.profile_picture) }}" class="profile-image" alt="Profile Image">
+                </div>
+                <div class="contenter">
+                    <div class="content">
+                        <h2 class="title">{{ post.title.title() }}</h2>
+                        <!-- Manually escape HTML tags -->
+                        <p>{{ post.content|replace('<', '<')|replace('>', '>') }}</p>
+                        <div class="poster-date-likes">
+                            <p class="poster">Posted by: {{ post.username }}</p>
+                            <p class="date">Created at: {{ post.created_at }}</p>                            {% if post.edited_at %}
+                                <p>Edited at: {{ post.edited_at }}</p>
+                            {% endif %}
+                            <p class="likes">Likes: {{ post.num_likes }}</p>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            {% if total_posts > posts_per_page %}
+                {% if page > 1 %}
+                    <a href="{{ url_for('view_user_posts', user_id=user_id, page=page-1) }}">Previous</a>
+                {% endif %}
+                {% if page * posts_per_page < total_posts %}
+                    <a href="{{ url_for('view_user_posts', user_id=user_id, page=page+1) }}">Next</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
