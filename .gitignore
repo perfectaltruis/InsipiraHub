@@ -13,12 +13,6 @@ venv/
 # Ignore backup directories
 BackUps/
 
-# Ignore uploaded files
-uploads/
-
-# Ignore markdown files
-Markdowns/
-
 # Ignore any compiled binaries or executables
 *.exe
 *.dll
